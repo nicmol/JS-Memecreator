@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "watch": "webpack-dev-server",
     "webpack": "webpack",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,21 +18,29 @@
     "url": "https://github.com/LCC-CIT-Programming-CS233JS/lcc-cit-programming-cs233js-memecreator-nicmol/issues"
   },
   "homepage": "https://github.com/LCC-CIT-Programming-CS233JS/lcc-cit-programming-cs233js-memecreator-nicmol#readme",
-
-"babel": {
-	"presets": [ "@babel/env"]
-},
+  "babel": {
+    "presets": [
+      "@babel/env"
+    ]
+  },
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.1",
+    "file-loader": "^3.0.1",
+    "less": "^3.9.0",
+    "less-loader": "^4.1.0",
     "style-loader": "^0.23.1",
-    "webpack": "^4.30.0"
+    "url-loader": "^1.1.2",
+    "webpack": "^4.30.0",
+    "webpack-dev-server": "^3.3.1"
   },
   "dependencies": {
     "D": "^1.0.0",
+    "bootstrap": "^3.4.1",
+    "jquery": "^3.4.0",
     "webpack-cli": "^3.3.0"
   }
 }

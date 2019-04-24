@@ -3,9 +3,64 @@ import './general';
 class Memes {
   constructor() {
     console.log("Memes JS File");
+    this.$topTextInput = document.getElementById('topText');
+    this.$bottomTextInput = document.getElementById('bottomText');
+    this.$imageInput = document.getElementById('imgCanvas');
+    this.$downloadButton =  document.getElementById('downloadMeme');
+    this.$canvas = document.getElementById('imgCanvas');
+    this.$defaultImage = document.querySelector('#defaultImage');
+    this.image = this.$defaultImage;
+    this.$context = this.$canvas.getContext('2d');
+    this.deviceWidth = window.innerWidth;
+    
+    this.createCanvas();
+    this.createMeme(); //should see image on page 
   }
 }
 new Memes();
+
+createCanvas(){
+  this.$canvas.width = math.min(640, this.deviceWidth-30);
+  this.$canvas.width = math.min(480, this.deviceWidth);
+}
+
+createMeme(){
+  console.log('rendered');
+  //clears image
+  this.$context.clearRect(0, 0, this.$canvas.height, this.$canvas.width);
+
+  //draws the image
+  this.$canvas.height = this.image.height;
+  this.$canvas.width = this.image.width;
+
+  //text for drawing
+  let fontSize = ((this.$canvas.width+this.$canvas.height)/2)*4/100;
+  context.font = `${fontSize}pt sans-serif`;
+  context.textAlign = 'center';
+  context.textBaseline = 'top';
+  //stroke text
+  context.lineWidth  = fontSize/5;
+  context.strokeStyle = 'black';
+  context.fillStyle = 'white';//fill text
+//value of text from input fields
+  const topText = this.$topTextInput.value.toUpperCase();
+  const bottomText = this.$bottomTextInput.value.toUpperCase();
+  //render top text
+  context.strokeText(topText, this.$canvas.width/2,
+  this.$canvas.height*(5/100));
+  context.fillText(topText, this.$canvas.width/2,
+  this.$canvas.height*(5/100));
+  //render bottom text
+  context.strokeText(bottomText, this.$canvas.width/2, 
+  this.$canvas.height*(90/100));
+  context.fillText(bottomText, this.$canvas.width/2, 
+  this.$canvas.height*(90/100));
+
+
+   
+  let context = this.$canvas.getContext('2d');
+
+}
 
 /*  
 Create a class called Memes
