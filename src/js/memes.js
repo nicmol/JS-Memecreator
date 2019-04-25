@@ -5,7 +5,7 @@ class Memes {
     console.log("Memes JS File");
     this.$topTextInput = document.getElementById('topText');
     this.$bottomTextInput = document.getElementById('bottomText');
-    this.$imageInput = document.getElementById('imgCanvas');
+    this.$imageInput = document.getElementById('image');
     this.$downloadButton =  document.getElementById('downloadMeme');
     this.$canvas = document.getElementById('imgCanvas');
     this.$defaultImage = document.querySelector('#defaultImage');
@@ -15,52 +15,85 @@ class Memes {
     
     this.createCanvas();
     this.createMeme(); //should see image on page 
+    this.addEventListeners();
   }
+
+  createCanvas(){
+    const canvasHeight = Math.min(480, this.deviceWidth-30);
+    const canvasWidth = Math.min(640, this.deviceWidth-30);
+
+    this.$canvas.height = canvasHeight;
+    this.$canvas.width = canvasWidth;
+  }
+
+  createMeme(){
+      
+    //clears image
+    this.$context.clearRect(0, 0, this.$canvas.height, this.$canvas.width);
+  
+    //draws the image
+    this.$canvas.height = this.image.height;
+    this.$canvas.width = this.image.width;
+    this.$context.drawImage(this.image, 0, 0);
+
+    //text for drawing
+    let fontSize = ((this.$canvas.width+this.$canvas.height)/2)*4/100;
+    this.$context.font = `${fontSize}pt sans-serif`;
+    this.$context.textAlign = 'center';
+    this.$context.textBaseline = 'top';
+    //stroke text
+    this.$context.lineWidth  = fontSize/5;
+    this.$context.strokeStyle = 'black';
+    this.$context.fillStyle = 'white';//fill text
+  //value of text from input fields
+    const topText = this.$topTextInput.value.toUpperCase();
+    const bottomText = this.$bottomTextInput.value.toUpperCase();
+    //render top text
+    this.$context.strokeText(topText, this.$canvas.width/2,
+    this.$canvas.height*(5/100));
+    this.$context.fillText(topText, this.$canvas.width/2,
+    this.$canvas.height*(5/100));
+    //render bottom text
+    this.$context.strokeText(bottomText, this.$canvas.width/2, 
+    this.$canvas.height*(90/100));
+    this.$context.fillText(bottomText, this.$canvas.width/2, 
+    this.$canvas.height*(90/100));
+  }
+ 
+   addEventListeners(){
+    this.createMeme = this.createMeme.bind(this);
+    this.downloadMeme = this.downloadMeme.bind(this);
+    this.loadImage = this.loadImage.bind(this);
+    let inputNodes = [this.$topTextInput, this.$bottomTextInput];
+    inputNodes.forEach(element => element.addEventListener('keyup', this.createMeme));
+    inputNodes.forEach(element => element.addEventListener('change', this.createMeme));
+    this.$downloadButton.addEventListener('click', this.downloadMeme);
+    this.$imageInput.addEventListener('change', this.loadImage);
+  } 
+  downloadMeme() {
+    const imageSource = this.$canvas.toDataURL('image/png');
+    this.$downloadButton.setAttribute('href', imageSource);
+  }
+  loadImage() {
+    if (this.$imageInput.files && this.$imageInput.files[0]) {
+    let reader = new FileReader();
+    reader.onload = () => {
+      this.image = new Image();
+      this.image.onload = () => {
+        this.createMeme();
+      };
+      this.image.src = reader.result;
+    };
+    reader.readAsDataURL(this.$imageInput.files[0]);
+    }
+  }
+
 }
+   
 new Memes();
 
-createCanvas(){
-  this.$canvas.width = math.min(640, this.deviceWidth-30);
-  this.$canvas.width = math.min(480, this.deviceWidth);
-}
-
-createMeme(){
-  console.log('rendered');
-  //clears image
-  this.$context.clearRect(0, 0, this.$canvas.height, this.$canvas.width);
-
-  //draws the image
-  this.$canvas.height = this.image.height;
-  this.$canvas.width = this.image.width;
-
-  //text for drawing
-  let fontSize = ((this.$canvas.width+this.$canvas.height)/2)*4/100;
-  context.font = `${fontSize}pt sans-serif`;
-  context.textAlign = 'center';
-  context.textBaseline = 'top';
-  //stroke text
-  context.lineWidth  = fontSize/5;
-  context.strokeStyle = 'black';
-  context.fillStyle = 'white';//fill text
-//value of text from input fields
-  const topText = this.$topTextInput.value.toUpperCase();
-  const bottomText = this.$bottomTextInput.value.toUpperCase();
-  //render top text
-  context.strokeText(topText, this.$canvas.width/2,
-  this.$canvas.height*(5/100));
-  context.fillText(topText, this.$canvas.width/2,
-  this.$canvas.height*(5/100));
-  //render bottom text
-  context.strokeText(bottomText, this.$canvas.width/2, 
-  this.$canvas.height*(90/100));
-  context.fillText(bottomText, this.$canvas.width/2, 
-  this.$canvas.height*(90/100));
 
 
-   
-  let context = this.$canvas.getContext('2d');
-
-}
 
 /*  
 Create a class called Memes
